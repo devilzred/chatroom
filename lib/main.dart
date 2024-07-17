@@ -1,4 +1,7 @@
-import 'package:chatroom/auth/loginpage.dart';
+import 'package:chatroom/auth/forgetpass_page.dart';
+import 'package:chatroom/auth/login_page.dart';
+import 'package:chatroom/auth/signup_page.dart';
+import 'package:chatroom/screens/home.dart';
 import 'package:chatroom/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,6 +41,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: LoginScreen(),
+      routes: {
+        '/home':(context) => HomeScreen(),
+        '/login':(context)=>LoginScreen(),
+        '/signup':(context)=>SignUpScreen(),
+        '/forgotpass':(context)=>ForgetpassPage(),
+      },
     );
   }
 }

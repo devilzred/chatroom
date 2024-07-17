@@ -12,34 +12,33 @@ class AppColors {
 }
 
 class AppFontSizes {
-  static const double verysmall = 12.0;
   static const double small = 14.0;
   static const double medium = 16.0;
   static const double large = 20.0;
-  static const double extraLarge = 24.0;
+  static const double extraLarge = 32.0;
 }
 class AppStyle{
 static const TextStyle h1 = TextStyle(
-    fontSize: 32.0,
+    fontSize: AppFontSizes.extraLarge,
     fontWeight: FontWeight.bold,
     color: AppColors.text,
   );
 
  static const TextStyle h2 = TextStyle(
-    fontSize: 28.0,
+    fontSize: AppFontSizes.large,
     fontWeight: FontWeight.bold,
     color: AppColors.text,
   );
 
   // Paragraphs
  static const TextStyle bodyText = TextStyle(
-    fontSize: AppFontSizes.medium,
+    fontSize: AppFontSizes.small,
     color: AppColors.text,
     height: 1.5,
   );
 
  static const TextStyle bodyTextBold = TextStyle(
-    fontSize: AppFontSizes.medium,
+    fontSize: AppFontSizes.small,
     fontWeight: FontWeight.bold,
     color: AppColors.text,
     height: 1.5,
@@ -64,6 +63,6 @@ static const TextStyle h1 = TextStyle(
 class BoxHeight{
   static const double verysmall=10.0;
   static const double small=20.0;
-  static const double medium=40.0;
-  static const double large=60.0;
+  static const double medium=30.0;
+  static const double large=40.0;
 }

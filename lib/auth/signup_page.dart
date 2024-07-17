@@ -1,0 +1,112 @@
+
+import 'package:chatroom/widgets/custom_appbar.dart';
+import 'package:chatroom/widgets/password_form.dart';
+import 'package:chatroom/functions/vaildator_functions.dart';
+import 'package:chatroom/utils/utils.dart';
+import 'package:chatroom/widgets/resuse_button.dart';
+import 'package:chatroom/widgets/reuse_textformfield.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class SignUpScreen extends StatelessWidget {
+  SignUpScreen({super.key});
+
+  final TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _namecontroller = TextEditingController();
+  final TextEditingController _confirmpasscontroller = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Image(
+                     image: AssetImage('assets/images/login_image.png')),
+                Text(
+                  "Let's Setup your account",
+                  style: GoogleFonts.raleway(
+                      fontWeight: FontWeight.w600, fontSize: AppFontSizes.large),
+                ),
+                const SizedBox( 
+                  height: BoxHeight.small,
+                ),
+                CustomTextFormField(
+                    validator: validateRequired,
+                    labelText: 'Name',
+                    controller: _namecontroller,
+                    prefixIcon: const Icon(
+                      Icons.emoji_people_sharp,
+                    )),
+                const SizedBox(
+                  height: BoxHeight.verysmall,
+                ),
+                CustomTextFormField(
+                    validator: validateEmail,
+                    labelText: 'Email',
+                    controller: _emailcontroller,
+                    prefixIcon: const Icon(
+                      Icons.email_rounded,
+                    )),
+                const SizedBox(
+                  height: BoxHeight.verysmall,
+                ),
+                Passwordform(controller: _passwordcontroller),
+                const SizedBox(
+                  height: BoxHeight.verysmall,
+                ),
+                Passwordform(controller: _confirmpasscontroller),
+                
+                const SizedBox(
+                  height: BoxHeight.small,
+                ),
+                ReusableButton(buttonText: 'Signup', onPressed: () {
+                  if(_formKey.currentState!.validate()){
+                            
+                          }
+                }),
+                const SizedBox(
+                  height: BoxHeight.small,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: 110,
+                      child: SignInButton(
+                        Buttons.Google,
+                        text: "Sign-up",
+                        onPressed: () {
+                          
+                        },
+                      ),
+                    ),
+                    Text("|",style: TextStyle(fontSize: AppFontSizes.extraLarge),),
+                    GestureDetector(
+                      child: Text("Go back & Login",style: AppStyle.link,),
+                      onTap: (){
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      )),
+    );
+  }
+}

@@ -15,7 +15,7 @@ class ReusableButton extends StatelessWidget {
     required this.onPressed,
     this.buttonColor = AppColors.primary,
     this.buttonHeight = 40.0,
-    this.buttonWidth = 100,
+    this.buttonWidth = 170,
     this.buttonradius = 8,
   }) : super(key: key);
 
