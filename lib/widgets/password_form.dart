@@ -22,7 +22,7 @@ class _PasswordformState extends State<Passwordform> {
   @override
   Widget build(BuildContext context) {
     return CustomTextFormField(
-      // validator: validatePassword,
+      validator: validatePassword,
       labelText: widget.labelText,
       controller: widget.controller,
       obscureText: _hide,

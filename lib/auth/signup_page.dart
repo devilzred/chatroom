@@ -1,13 +1,11 @@
-
-import 'package:chatroom/widgets/custom_appbar.dart';
+import 'package:chatroom/functions/auth_functions.dart';
+import 'package:chatroom/functions/show_error.dart';
 import 'package:chatroom/widgets/password_form.dart';
 import 'package:chatroom/functions/vaildator_functions.dart';
 import 'package:chatroom/utils/utils.dart';
 import 'package:chatroom/widgets/resuse_button.dart';
 import 'package:chatroom/widgets/reuse_textformfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/button_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -24,7 +22,7 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+          child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
           child: Form(
@@ -33,19 +31,19 @@ class SignUpScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Image(
-                     image: AssetImage('assets/images/login_image.png')),
+                const Image(image: AssetImage('assets/images/login_image.png')),
                 Text(
                   "Let's Setup your account",
                   style: GoogleFonts.raleway(
-                      fontWeight: FontWeight.w600, fontSize: AppFontSizes.large),
+                      fontWeight: FontWeight.w600,
+                      fontSize: AppFontSizes.large),
                 ),
-                const SizedBox( 
+                const SizedBox(
                   height: BoxHeight.small,
                 ),
                 CustomTextFormField(
                     validator: validateRequired,
-                    labelText: 'Name',
+                    labelText: 'username',
                     controller: _namecontroller,
                     prefixIcon: const Icon(
                       Icons.emoji_people_sharp,
@@ -68,39 +66,36 @@ class SignUpScreen extends StatelessWidget {
                   height: BoxHeight.verysmall,
                 ),
                 Passwordform(controller: _confirmpasscontroller),
-                
                 const SizedBox(
                   height: BoxHeight.small,
                 ),
-                ReusableButton(buttonText: 'Signup', onPressed: () {
-                  if(_formKey.currentState!.validate()){
-                            
-                          }
-                }),
+                ReusableButton(
+                    buttonText: 'Signup',
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        if (_passwordcontroller.text.trim() == _confirmpasscontroller.text.trim()) {
+                          signUpWithEmailPassword(
+                              _emailcontroller.text.trim(),
+                              _passwordcontroller.text.trim(),
+                              _namecontroller.text,
+                              context);
+                        } else {
+                          showErrorDialog(
+                              context, "The password didn't match. Try again");
+                        }
+                      }
+                    }),
                 const SizedBox(
                   height: BoxHeight.small,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: 110,
-                      child: SignInButton(
-                        Buttons.Google,
-                        text: "Sign-up",
-                        onPressed: () {
-                          
-                        },
-                      ),
-                    ),
-                    Text("|",style: TextStyle(fontSize: AppFontSizes.extraLarge),),
-                    GestureDetector(
-                      child: Text("Go back & Login",style: AppStyle.link,),
-                      onTap: (){
-                        Navigator.of(context).pop();
-                      },
-                    )
-                  ],
+                GestureDetector(
+                  child: Text(
+                    "Go back & Login",
+                    style: AppStyle.link,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
                 ),
               ],
             ),

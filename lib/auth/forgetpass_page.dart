@@ -4,6 +4,7 @@ import 'package:chatroom/widgets/resuse_button.dart';
 import 'package:chatroom/widgets/reuse_textformfield.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ForgetpassPage extends StatelessWidget {
   ForgetpassPage({super.key});
 
