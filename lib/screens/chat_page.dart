@@ -23,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
   //text controller
   final TextEditingController _messageController = TextEditingController();
 
-  final chatServices _chatService = chatServices();
+  final ChatServices _chatService = ChatServices();
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   //focus keyboard
@@ -103,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
         onTap:(){
 
           // calling the function to block user from chatservices
-          chatServices().blockUser(widget.recievedID);
+          _chatService.blockUser(widget.recievedID);
 
           //dismiss the bottom sheet
           Navigator.pop(context);

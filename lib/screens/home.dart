@@ -12,10 +12,10 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   //initialize chatservices
-  final chatServices _chatService = chatServices();
+  final ChatServices _chatService = ChatServices();
 
   //function to get current user
-  User? getCurrentUser(){
+  User? getCurrentUser() {
     return FirebaseAuth.instance.currentUser;
   }
 
@@ -24,46 +24,94 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(title: 'H O M E',),
       drawer: MyDrawer(),
-      body:_buildUserList(),
+      floatingActionButton: Container(
+        width: 55,
+        height: 55,
+        margin: EdgeInsets.all(5.0),
+        decoration: BoxDecoration(
+          color: AppColors.accent,
+          borderRadius: BorderRadius.circular(22)
+        ),
+        child: IconButton(onPressed: () {
+          Navigator.pushNamed(context, '/addchat');
+        }, icon: Icon(Icons.add_comment_rounded, color: AppColors.primaryDark, size: 30,))),
+      body: _buildUsersChattedWith(),
     );
   }
 
-  //build a list of user except for the current user
-  Widget _buildUserList(){
-    return StreamBuilder(stream: _chatService.getunblockedUsers(), builder: (context,snapshot){
+  //build a list of users the current user has chatted with
+  Widget _buildUsersChattedWith() {
+    return StreamBuilder<List<Map<String, dynamic>>>(
+      stream: _chatService.getUsersChattedWith(),
+      builder: (context, snapshot) {
 
-      //if error
-      if(snapshot.hasError){
-        showErrorDialog(context, 'Something went wrong, please restart');
-        return Center(child: Text('Error',style: AppStyle.errorText,));
-      }
+        //if error
+        if (snapshot.hasError) {
+          showErrorDialog(context, 'Something went wrong, please restart');
+          return Center(child: Text('Error', style: AppStyle.errorText,));
+        }
 
-      //loading
-      if(snapshot.connectionState == ConnectionState.waiting){
-        return Center(child: Text('Loading..',style: AppStyle.loadingText,));
-      }
+        //loading
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: Text('Loading..', style: AppStyle.loadingText,));
+        }
 
-      //retrun list view
-      return ListView(
-        children: snapshot.data!.map<Widget>((userData)=>_buildUserListItem(userData,context)).toList(),
-      );
+        //return list view
+        final usersChattedWith = snapshot.data ?? [];
 
-    });
-  }
-  
-  //build indivdual list tile for users
-  Widget _buildUserListItem(Map<String,dynamic>userData,BuildContext context){
+        if (usersChattedWith.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('No recent chats', style: AppStyle.h2),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    
+                    
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/addchat');
+                  },
+                  child: Text('Start a new chat',style: AppStyle.buttonText,),
+                ),
+              ],
+            ),
+          );
+        }
 
-    //display all users except current user
-    if(userData['email']!= getCurrentUser()!.email){
-    return UserTile(
-      text: userData['email'],
-      onTap: (){
-        //navigate to user chat
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen(recievedEmail: userData['email'],recievedID: userData['uid'],)));
+        return ListView.builder(
+          itemCount: usersChattedWith.length,
+          itemBuilder: (context, index) {
+            final userData = usersChattedWith[index];
+            return _buildUserListItem(userData, context);
+          },
+        );
       },
-    );}
-    else{
+    );
+  }
+
+  //build individual list tile for users
+  Widget _buildUserListItem(Map<String, dynamic> userData, BuildContext context) {
+    if (userData['email'] != getCurrentUser()!.email) {
+      return UserTile(
+        text: userData['email'],
+        onTap: () {
+          //navigate to user chat
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatScreen(
+                recievedEmail: userData['email'],
+                recievedID: userData['uid'],
+              ),
+            ),
+          );
+        },
+      );
+    } else {
       return Container();
     }
   }

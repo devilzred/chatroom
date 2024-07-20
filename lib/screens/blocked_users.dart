@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class BlockedUserList extends StatelessWidget {
   BlockedUserList({super.key});
 
-  final chatServices chatservices= chatServices();
+  final ChatServices chatservices= ChatServices();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   //show confirm box to unblock
@@ -21,7 +21,7 @@ class BlockedUserList extends StatelessWidget {
       actions: [
         TextButton(onPressed: (){
           // calling the function to ublock user from chatservices
-          chatservices.unblockUsers(userID); 
+           chatservices.unblockUsers(userID); 
 
           //dismiss the diaglog
           Navigator.pop(context);
@@ -64,9 +64,10 @@ class BlockedUserList extends StatelessWidget {
               ? Center(child: Text("No Blocked Users", style: AppStyle.h2))
 
               //else show the list view of the blocked users
-              :ListView.builder(itemBuilder: (context,index){
+              :ListView.builder(itemCount: snapshot.data!.length, itemBuilder: (context,index){
+                
                 final user=blockedusers[index];
-                return UserTile(text: user['email'], onTap: ()=>_showUnblockBox(context,userID));
+                return UserTile(text: user['email'], onTap: ()=>_showUnblockBox(context,user['uid']));
               });
         }, ),);
   }

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class chatServices extends ChangeNotifier {
+class ChatServices extends ChangeNotifier {
   //get instance of firestore
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -49,6 +49,14 @@ class chatServices extends ChangeNotifier {
           .doc(chatRoomID)
           .collection('messages')
           .add(newMessage.toMap());
+
+          // Ensure chat room document includes participants field
+    await _firestore.collection('chat_rooms').doc(chatRoomID).set({
+      'participants': [currentUserId, receiverID],
+      'last_message': message, // Optional: to track the last message sent
+      'last_message_time': timestamp // Optional: to track the time of the last message
+    }, SetOptions(merge: true));
+
       print("Message sent successfully: $message");
     } catch (e) {
       print("Error sending message: $e");
@@ -84,16 +92,29 @@ class chatServices extends ChangeNotifier {
   }
 
   //Unblock Users
-  Future<void> unblockUsers(String blockedUserId) async {
-    final currentUser = _auth.currentUser;
+    Future<void> unblockUsers(String blockedUserId) async {
+    try {
+      final currentUser = _auth.currentUser;
 
-    await _firestore
-        .collection('users')
-        .doc(currentUser!.uid)
-        .collection('blockedusers')
-        .doc(blockedUserId)
-        .delete();
+      if (currentUser != null) {
+        await _firestore
+            .collection('users')
+            .doc(currentUser.uid)
+            .collection('blockedusers')
+            .doc(blockedUserId)
+            .delete();
+      } else {
+        throw FirebaseAuthException(
+          code: 'no-current-user',
+          message: 'No current user is logged in.',
+        );
+      }
+    } catch (e) {
+      print('Error unblocking user: $e');
+      throw e; // You can handle this error in the UI as needed
+    }
   }
+
 
   //Get blocked users
   Stream<List<Map<String, dynamic>>> getblockedUsers(String userID) {
@@ -139,4 +160,88 @@ class chatServices extends ChangeNotifier {
           .toList();
     });
   }
+
+  //get all the users in search
+  Future<List<Map<String, dynamic>>> getAllUsers() async {
+    final currentUser = _auth.currentUser;
+
+    if (currentUser == null) {
+      throw FirebaseAuthException(
+        code: 'no-current-user',
+        message: 'No current user is logged in.',
+      );
+    }
+
+    final allUsersSnapshot = await _firestore.collection('users').get();
+    final blockedUsersSnapshot = await _firestore
+        .collection('users')
+        .doc(currentUser.uid)
+        .collection('blockedusers')
+        .get();
+    final chatsSnapshot = await _firestore
+        .collection('chats')
+        .where('participants', arrayContains: currentUser.uid)
+        .get();
+
+    List<String> blockedUserIds = blockedUsersSnapshot.docs.map((doc) => doc.id).toList();
+    List<String> chatUserIds = chatsSnapshot.docs
+        .map((doc) => (doc.data()['participants'] as List<dynamic>).where((id) => id != currentUser.uid).first as String)
+        .toList();
+
+    List<Map<String, dynamic>> users = [];
+    for (var doc in allUsersSnapshot.docs) {
+      if (doc.id != currentUser.uid && !blockedUserIds.contains(doc.id) && !chatUserIds.contains(doc.id)) {
+        users.add({'id': doc.id, ...doc.data()});
+      }
+    }
+
+    return users;
+  }
+
+
+// Get users that the current user has chatted with
+  Stream<List<Map<String, dynamic>>> getUsersChattedWith() {
+    final currentUser = _auth.currentUser;
+
+    if (currentUser == null) {
+      return Stream.error('No current user is logged in.');
+    }
+
+    return _firestore
+        .collection('chat_rooms')
+        .where('participants', arrayContains: currentUser.uid)
+        .snapshots()
+        .asyncMap((snapshot) async {
+      Set<String> userIds = {};
+
+      for (var doc in snapshot.docs) {
+        var chatRoomData = doc.data();
+        var participants = chatRoomData['participants'] as List<dynamic>;
+
+        print('Chat room data: $chatRoomData');
+
+        for (var participantId in participants) {
+          if (participantId != currentUser.uid) {
+            userIds.add(participantId);
+          }
+        }
+      }
+
+      print('User IDs: $userIds');
+
+      List<Map<String, dynamic>> usersChattedWith = [];
+
+      for (var userId in userIds) {
+        var userDoc = await _firestore.collection('users').doc(userId).get();
+        if (userDoc.exists) {
+          usersChattedWith.add(userDoc.data()! as Map<String, dynamic>);
+        }
+      }
+
+      print('Users chatted with: $usersChattedWith');
+
+      return usersChattedWith;
+    });
+  }
+
 }
