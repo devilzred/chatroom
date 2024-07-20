@@ -1,4 +1,5 @@
 
+import 'package:chatroom/screens/activesession_page.dart';
 import 'package:chatroom/screens/addchat_page.dart';
 import 'package:chatroom/screens/blocked_users.dart';
 import 'package:chatroom/screens/forgetpass_page.dart';
@@ -76,9 +77,9 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignUpScreen(),
         '/forgotpass': (context) => ForgetpassPage(),
-        '/profile': (context) => ProfileScreen(),
+        '/profile': (context) => ProfilePage(),
         '/blocked': (context) => BlockedUserList(),
-        '/addchat': (context) => addChatScreen(),
+        '/active': (context) => ActivesessionPage(),
       },
       builder: (context, child) {
         return ErrorHandler(

@@ -24,17 +24,17 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(title: 'H O M E',),
       drawer: MyDrawer(),
-      floatingActionButton: Container(
-        width: 55,
-        height: 55,
-        margin: EdgeInsets.all(5.0),
-        decoration: BoxDecoration(
-          color: AppColors.accent,
-          borderRadius: BorderRadius.circular(22)
-        ),
-        child: IconButton(onPressed: () {
-          Navigator.pushNamed(context, '/addchat');
-        }, icon: Icon(Icons.add_comment_rounded, color: AppColors.primaryDark, size: 30,))),
+      // floatingActionButton: Container(
+      //   width: 55,
+      //   height: 55,
+      //   margin: EdgeInsets.all(5.0),
+      //   decoration: BoxDecoration(
+      //     color: AppColors.accent,
+      //     borderRadius: BorderRadius.circular(22)
+      //   ),
+      //   child: IconButton(onPressed: () {
+      //     Navigator.pushNamed(context, '/addchat');
+      //   }, icon: Icon(Icons.add_comment_rounded, color: AppColors.primaryDark, size: 30,))),
       body: _buildUsersChattedWith(),
     );
   }
@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
   //build a list of users the current user has chatted with
   Widget _buildUsersChattedWith() {
     return StreamBuilder<List<Map<String, dynamic>>>(
-      stream: _chatService.getUsersChattedWith(),
+      stream: _chatService.getunblockedUsers(),
       builder: (context, snapshot) {
 
         //if error

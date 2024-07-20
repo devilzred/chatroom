@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -23,6 +25,17 @@ class MyDrawer extends StatelessWidget {
                   leading: Icon(Icons.home_filled),
                   onTap: (){
                     Navigator.pop(context);
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  title: Text('A C T I V E'),
+                  leading: Icon(Icons.online_prediction),
+                  onTap: (){
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/active'); 
                   },
                 ),
               ),

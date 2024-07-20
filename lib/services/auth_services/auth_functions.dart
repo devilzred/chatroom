@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 Future<void> signUpWithEmailPassword(
-    String email, String password, String name, BuildContext context) async {
+    String email, String password, String name, String profilePicUrl,BuildContext context,) async {
   try {
     CustomLoading(context);
     UserCredential userCredential =
@@ -25,6 +25,7 @@ Future<void> signUpWithEmailPassword(
       'uid' : userCredential.user!.uid,
       'name': name,
       'email': email,
+      'profilePicUrl': profilePicUrl,
     }).whenComplete((){
       Navigator.of(context).pop();
     });
@@ -83,12 +84,10 @@ Future<void> loginWithEmailPassword(
 
 Future<void> continueWithGoogle(BuildContext context) async {
   try {
-    CustomLoading(context);
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     if (googleUser == null) {
-      Navigator.of(context).pop();
       showErrorDialog(context, 'Google sign in was cancelled');
       return;
     }
@@ -113,7 +112,6 @@ Future<void> continueWithGoogle(BuildContext context) async {
         'name': googleUser.displayName,
         'email': googleUser.email,
       }).whenComplete(() {
-      Navigator.of(context).pop();
     },);
     }
     print('User signed in with Google: ${userCredential.user?.email}'); //user logged successfully
@@ -127,6 +125,6 @@ Future<void> continueWithGoogle(BuildContext context) async {
   } catch (e) {
     showErrorDialog(context, 'Error occurred: $e');
     print('Error occurred: $e');
-  }
+  } 
 }
 

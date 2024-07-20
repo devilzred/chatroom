@@ -78,6 +78,7 @@ class SignUpScreen extends StatelessWidget {
                               _emailcontroller.text.trim(),
                               _passwordcontroller.text.trim(),
                               _namecontroller.text,
+                              '',
                               context);
                         } else {
                           showErrorDialog(
