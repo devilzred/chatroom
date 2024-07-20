@@ -1,5 +1,5 @@
 import 'package:chatroom/functions/show_error.dart';
-import 'package:chatroom/widgets/reuse_loading.dart';
+import 'package:chatroom/components/reuse_loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +22,7 @@ Future<void> signUpWithEmailPassword(
         .collection('users')
         .doc(userCredential.user?.uid)
         .set({
+      'uid' : userCredential.user!.uid,
       'name': name,
       'email': email,
     }).whenComplete((){
@@ -108,6 +109,7 @@ Future<void> continueWithGoogle(BuildContext context) async {
     if (userCredential.additionalUserInfo?.isNewUser ?? false) {
       // Add user information to Firestore
       await FirebaseFirestore.instance.collection('users').doc(userCredential.user?.uid).set({
+        'uid' : userCredential.user!.uid,
         'name': googleUser.displayName,
         'email': googleUser.email,
       }).whenComplete(() {

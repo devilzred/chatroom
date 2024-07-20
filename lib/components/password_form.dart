@@ -1,5 +1,5 @@
 import 'package:chatroom/functions/vaildator_functions.dart';
-import 'package:chatroom/widgets/reuse_textformfield.dart';
+import 'package:chatroom/components/reuse_textformfield.dart';
 import 'package:flutter/material.dart';
 
 class Passwordform extends StatefulWidget {

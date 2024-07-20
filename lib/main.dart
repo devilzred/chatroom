@@ -1,10 +1,12 @@
 
-import 'package:chatroom/auth/forgetpass_page.dart';
+import 'package:chatroom/screens/blocked_users.dart';
+import 'package:chatroom/screens/forgetpass_page.dart';
 import 'package:chatroom/auth/login_page.dart';
 import 'package:chatroom/auth/signup_page.dart';
 import 'package:chatroom/screens/home.dart';
+import 'package:chatroom/screens/profile_page.dart';
 import 'package:chatroom/utils/utils.dart';
-import 'package:chatroom/widgets/error_handler.dart';
+import 'package:chatroom/components/error_handler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -59,7 +61,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: AppColors.primary,
         primaryColorDark: AppColors.primaryDark,
-        hintColor: AppColors.accent,
+        hintColor: Colors.blueGrey,
         scaffoldBackgroundColor: AppColors.background,
         textTheme: GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme),
         primaryTextTheme: GoogleFonts.ralewayTextTheme(
@@ -73,6 +75,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/signup': (context) => SignUpScreen(),
         '/forgotpass': (context) => ForgetpassPage(),
+        '/profile': (context) => ProfileScreen(),
+        '/blocked': (context) => BlockedUserList(),
       },
       builder: (context, child) {
         return ErrorHandler(

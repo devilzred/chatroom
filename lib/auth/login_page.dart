@@ -1,10 +1,9 @@
-import 'package:chatroom/functions/auth_functions.dart';
-import 'package:chatroom/widgets/password_form.dart';
+import 'package:chatroom/services/auth_services/auth_functions.dart';
+import 'package:chatroom/components/password_form.dart';
 import 'package:chatroom/functions/vaildator_functions.dart';
 import 'package:chatroom/utils/utils.dart';
-import 'package:chatroom/widgets/resuse_button.dart';
-import 'package:chatroom/widgets/reuse_loading.dart';
-import 'package:chatroom/widgets/reuse_textformfield.dart';
+import 'package:chatroom/components/resuse_button.dart';
+import 'package:chatroom/components/reuse_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';

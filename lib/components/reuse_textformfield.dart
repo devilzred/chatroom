@@ -2,21 +2,25 @@ import 'package:chatroom/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  final String labelText;
+  final String? labelText;
   final TextEditingController controller;
   final TextInputType keyboardType;
   final bool obscureText;
-  final Icon prefixIcon;
+  final Icon? prefixIcon;
   final IconButton? suffixIcon;
   final String? Function(String?)? validator;
+  final FocusNode? focusNode;
+  final String? hintText;
 
   const CustomTextFormField({super.key, 
-    required this.labelText,
+    this.labelText,
     required this.controller,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
-    this.validator, required this.prefixIcon,
-    this.suffixIcon,
+    this.validator, 
+    this.prefixIcon,
+    this.suffixIcon, this.focusNode,
+    this.hintText
   });
 
   @override
@@ -24,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       
       controller: controller,
+      focusNode: focusNode,
       keyboardType: keyboardType,
       obscureText: obscureText,
       validator: validator,
@@ -33,6 +38,7 @@ class CustomTextFormField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
         labelText: labelText,
+        hintText: hintText,
         
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),

@@ -11,7 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final double elevation;
-
+  
   const CustomAppBar({
     Key? key,
     required this.title,
@@ -29,16 +29,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
       title: Text(
         title,
-        style: AppStyle.h2.copyWith(
-          color: foregroundColor ?? AppColors.text,
-        ),
+        style: AppStyle.h2
       ),
       centerTitle: centerTitle,
       actions: actions,
       leading: leading,
-      backgroundColor: backgroundColor ?? AppColors.primary,
+      backgroundColor: Colors.transparent,
       elevation: elevation,
-      iconTheme: IconThemeData(color: foregroundColor ?? AppColors.text),
+      iconTheme: IconThemeData(color: AppColors.secondaryText),
     );
   }
 

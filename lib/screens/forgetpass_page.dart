@@ -1,7 +1,7 @@
 import 'package:chatroom/functions/vaildator_functions.dart';
 import 'package:chatroom/utils/utils.dart';
-import 'package:chatroom/widgets/resuse_button.dart';
-import 'package:chatroom/widgets/reuse_textformfield.dart';
+import 'package:chatroom/components/resuse_button.dart';
+import 'package:chatroom/components/reuse_textformfield.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable

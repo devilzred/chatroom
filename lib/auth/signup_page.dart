@@ -1,10 +1,10 @@
-import 'package:chatroom/functions/auth_functions.dart';
+import 'package:chatroom/services/auth_services/auth_functions.dart';
 import 'package:chatroom/functions/show_error.dart';
-import 'package:chatroom/widgets/password_form.dart';
+import 'package:chatroom/components/password_form.dart';
 import 'package:chatroom/functions/vaildator_functions.dart';
 import 'package:chatroom/utils/utils.dart';
-import 'package:chatroom/widgets/resuse_button.dart';
-import 'package:chatroom/widgets/reuse_textformfield.dart';
+import 'package:chatroom/components/resuse_button.dart';
+import 'package:chatroom/components/reuse_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
