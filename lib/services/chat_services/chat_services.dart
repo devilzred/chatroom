@@ -160,12 +160,15 @@ class ChatServices extends ChangeNotifier {
           .toList();
     });
   }
+
+  //get active users
   Stream<List<Map<String, dynamic>>> getActiveUsers() {
   final currentUser = _auth.currentUser;
 
   if (currentUser == null) {
     return Stream.error('No current user is logged in.');
   }
+
    // Define the threshold for active users
   final int activeThresholdMinutes = 15;
   final Timestamp thresholdTimestamp = Timestamp.fromDate(

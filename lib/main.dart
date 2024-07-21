@@ -1,6 +1,4 @@
-
 import 'package:chatroom/screens/activesession_page.dart';
-import 'package:chatroom/screens/addchat_page.dart';
 import 'package:chatroom/screens/blocked_users.dart';
 import 'package:chatroom/screens/forgetpass_page.dart';
 import 'package:chatroom/auth/login_page.dart';
@@ -12,17 +10,25 @@ import 'package:chatroom/components/error_handler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  //load env file
+  await dotenv.load(fileName: "lib/.env");
+  
+  //initialzed stripe key
+  Stripe.publishableKey = "pk_test_51PedxmK8iGYfWsOyB9xUhJUvpsYJWY7k9lT5EbAswhf6R6XKFPapi5JKUVhwkhayJTznwznL9jeLIE86q4WKIDOJ00Fy0SgekX";
+
   // Ensure Flutter is initialized
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Preserve native splash screen
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  
+
   String initialRoute = '/login';
   String? errorMessage;
 
@@ -39,7 +45,8 @@ void main() async {
     }
   } catch (e) {
     print('Error initializing Firebase: $e');
-    errorMessage = 'Failed to initialize the app. Please check your connection and try again.';
+    errorMessage =
+        'Failed to initialize the app. Please check your connection and try again.';
   } finally {
     // Remove splash screen
     FlutterNativeSplash.remove();
@@ -53,7 +60,8 @@ class MyApp extends StatelessWidget {
   final String initialRoute;
   final String? errorMessage;
 
-  const MyApp({Key? key, required this.initialRoute, this.errorMessage}) : super(key: key);
+  const MyApp({Key? key, required this.initialRoute, this.errorMessage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +97,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-  
 }
-

@@ -3,7 +3,6 @@ import 'package:chatroom/screens/chat_page.dart';
 import 'package:chatroom/services/chat_services/chat_services.dart';
 import 'package:chatroom/utils/utils.dart';
 import 'package:chatroom/components/custom_appbar.dart';
-import 'package:chatroom/components/my_drawer.dart';
 import 'package:chatroom/components/user_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
