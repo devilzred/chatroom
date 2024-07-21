@@ -8,6 +8,7 @@ import 'package:chatroom/components/reuse_textformfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 
@@ -155,7 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
       var response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
-          'Authorization': 'Bearer sk_test_51PedxmK8iGYfWsOyb2PlEI8O43IKpgVuCNbn6TGuZCRDpAWhpIlSTbcWJR8ftyYAtDA0pKeacJcs8M4kEyMAEJWs00r23zsdWg',
+          'Authorization': dotenv.env['secerateKey']!,
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: body.map((key, value) => MapEntry(key, value.toString())),

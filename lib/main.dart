@@ -21,7 +21,7 @@ void main() async {
   await dotenv.load(fileName: "lib/.env");
   
   //initialzed stripe key
-  Stripe.publishableKey = "pk_test_51PedxmK8iGYfWsOyB9xUhJUvpsYJWY7k9lT5EbAswhf6R6XKFPapi5JKUVhwkhayJTznwznL9jeLIE86q4WKIDOJ00Fy0SgekX";
+  Stripe.publishableKey = dotenv.env['publishKey']!;
 
   // Ensure Flutter is initialized
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
