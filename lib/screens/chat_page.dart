@@ -127,7 +127,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Expanded(
             child: CustomTextFormField(
               focusNode: myFocusNode,
-              hintText: 'Send Message',
+              hintText: 'Type Message / Amount',
               controller: _messageController,
               suffixIcon: IconButton(
                 onPressed: sendMessage,
