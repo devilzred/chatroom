@@ -63,6 +63,29 @@ class ChatServices extends ChangeNotifier {
     }
   }
 
+  // Get the latest message for a chat room
+  Stream<String> getLatestMessage(String userID, String otherUserID) {
+    List<String> ids = [userID, otherUserID];
+    ids.sort();
+    String chatRoomID = ids.join('_');
+
+    return _firestore
+        .collection('chat_rooms')
+        .doc(chatRoomID)
+        .collection('messages')
+        .orderBy("timestamp", descending: true)
+        .limit(1)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        return snapshot.docs.first.data()['message'];
+      } else {
+        return '';
+      }
+    });
+  }
+
+
   //get messages
   Stream<QuerySnapshot> getMessages(String userID, otherUserID) {
     //construct a chatRoom Id
@@ -137,29 +160,31 @@ class ChatServices extends ChangeNotifier {
  
   //get Unblocked user stream 
   Stream<List<Map<String, dynamic>>> getunblockedUsers() {
-    final currentuser = _auth.currentUser;
+  final currentUser = _auth.currentUser;
 
-    return _firestore
-        .collection('users')
-        .doc(currentuser!.uid)
-        .collection('blockedusers')
-        .snapshots()
-        .asyncMap((snapshot) async {
-      //get blocked users id
-      final blockedUserIds = snapshot.docs.map((doc) => doc.id).toList();
+  return _firestore
+      .collection('users')
+      .doc(currentUser!.uid)
+      .collection('blockedusers')
+      .snapshots()
+      .asyncMap((snapshot) async {
+    // Get blocked users IDs
+    final blockedUserIds = snapshot.docs.map((doc) => doc.id).toList();
 
-      //get all users
-      final usersIds = await _firestore.collection('users').get();
-
-      //return as stream list
-      return usersIds.docs
-          .where((doc) =>
-              doc.data()['email'] != currentuser.email &&
-              !blockedUserIds.contains(doc.id))
-          .map((doc) => doc.data())
-          .toList();
-    });
-  }
+    // Get all users
+    final usersSnapshot = await _firestore.collection('users').get();
+    
+    // Filter out users who are not blocked and ensure they are still valid
+    return usersSnapshot.docs
+        .where((doc) {
+          doc.data();
+          return doc.id != currentUser.uid &&
+                 !blockedUserIds.contains(doc.id);
+        })
+        .map((doc) => doc.data())
+        .toList();
+  });
+}
 
   //get active users
   Stream<List<Map<String, dynamic>>> getActiveUsers() {

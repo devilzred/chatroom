@@ -232,18 +232,15 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: pickImage,
-                        child: _isLoadingImage
-                            ? CircularProgressIndicator()
-                            : CircleAvatar(
-                                radius: 60,
-                                backgroundImage: user!.profilePicUrl.isEmpty
-                                    ? AssetImage('assets/images/default_profile.png')
-                                    : NetworkImage(user!.profilePicUrl)
-                                        as ImageProvider,
-                              ),
-                      ),
+                      _isLoadingImage
+                          ? CircularProgressIndicator()
+                          : CircleAvatar(
+                              radius: 60,
+                              backgroundImage: user!.profilePicUrl.isEmpty
+                                  ? AssetImage('assets/images/default_profile.png')
+                                  : NetworkImage(user!.profilePicUrl)
+                                      as ImageProvider,
+                            ),
                       SizedBox(height: BoxHeight.small),
                       Text(user!.name, style: TextStyle(fontSize: 24)),
                       SizedBox(height: BoxHeight.verysmall),

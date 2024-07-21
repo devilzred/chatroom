@@ -22,7 +22,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'H O M E',),
+      appBar: CustomAppBar(
+        title: 'H O M E',
+      ),
       drawer: MyDrawer(),
       // floatingActionButton: Container(
       //   width: 55,
@@ -44,16 +46,23 @@ class HomeScreen extends StatelessWidget {
     return StreamBuilder<List<Map<String, dynamic>>>(
       stream: _chatService.getunblockedUsers(),
       builder: (context, snapshot) {
-
         //if error
         if (snapshot.hasError) {
           showErrorDialog(context, 'Something went wrong, please restart');
-          return Center(child: Text('Error', style: AppStyle.errorText,));
+          return Center(
+              child: Text(
+            'Error',
+            style: AppStyle.errorText,
+          ));
         }
 
         //loading
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: Text('Loading..', style: AppStyle.loadingText,));
+          return Center(
+              child: Text(
+            'Loading..',
+            style: AppStyle.loadingText,
+          ));
         }
 
         //return list view
@@ -69,13 +78,14 @@ class HomeScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
-                    
-                    
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, '/addchat');
                   },
-                  child: Text('Start a new chat',style: AppStyle.buttonText,),
+                  child: Text(
+                    'Start a new chat',
+                    style: AppStyle.buttonText,
+                  ),
                 ),
               ],
             ),
@@ -94,21 +104,31 @@ class HomeScreen extends StatelessWidget {
   }
 
   //build individual list tile for users
-  Widget _buildUserListItem(Map<String, dynamic> userData, BuildContext context) {
+  Widget _buildUserListItem(
+      Map<String, dynamic> userData, BuildContext context) {
     if (userData['email'] != getCurrentUser()!.email) {
-      return UserTile(
-        text: userData['email'],
-        onTap: () {
-          //navigate to user chat
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatScreen(
-                recievedEmail: userData['email'],
-                recievedID: userData['uid'],
-              ),
-            ),
-          );
+      return StreamBuilder<String>(
+        stream: _chatService.getLatestMessage(
+            getCurrentUser()!.uid, userData['uid']),
+        builder: (context, latestMessageSnapshot) {
+          final latestMessage = latestMessageSnapshot.data ?? '';
+
+          return UserTile(
+                text: userData['email'],
+                profilePicUrl: userData['profilePicUrl'] ?? '',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatScreen(
+                        recievedEmail: userData['email'],
+                        recievedID: userData['uid'],
+                      ),
+                    ),
+                  );
+                },
+                subtitle: latestMessage, // This should be used for the subtitle
+              );
         },
       );
     } else {

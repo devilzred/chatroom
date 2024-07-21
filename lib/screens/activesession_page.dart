@@ -71,6 +71,7 @@ class ActivesessionPage extends StatelessWidget {
   Widget _buildUserListItem(Map<String, dynamic> userData, BuildContext context) {
     if (userData['email'] != getCurrentUser()!.email) {
       return UserTile(
+        profilePicUrl: userData['profilePicUrl'] ?? '',
         text: userData['email'],
         onTap: () {
           Navigator.push(
