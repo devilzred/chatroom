@@ -8,7 +8,7 @@ class MyDrawer extends StatelessWidget {
   
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return Drawer(
       backgroundColor: AppColors.background,
       child: Column(
@@ -24,7 +24,7 @@ class MyDrawer extends StatelessWidget {
                   title: Text('H O M E'),
                   leading: Icon(Icons.home_filled),
                   onTap: (){
-                    Navigator.pop(context);
+                    Navigator.pop(ctx);
                   },
                 ),
               ),
@@ -34,8 +34,8 @@ class MyDrawer extends StatelessWidget {
                   title: Text('A C T I V E'),
                   leading: Icon(Icons.online_prediction),
                   onTap: (){
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/active'); 
+                   
+                    Navigator.pushNamed(ctx, '/active'); 
                   },
                 ),
               ),
@@ -45,8 +45,7 @@ class MyDrawer extends StatelessWidget {
                   title: Text('P R O F I L E'),
                   leading: Icon(Icons.person),
                   onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/profile');                  
+                    Navigator.pushNamed(ctx, '/profile');                  
                   },
                 ),
               ),
@@ -56,8 +55,8 @@ class MyDrawer extends StatelessWidget {
                   title: Text('B L O C K E D'),
                   leading: Icon(Icons.block_flipped),
                   onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/blocked');                  
+               
+                    Navigator.pushNamed(ctx, '/blocked');                  
                   },
                 ),
               ),
@@ -69,7 +68,7 @@ class MyDrawer extends StatelessWidget {
               title: Text('L O G O U T'),
               leading: Icon(Icons.logout),
               onTap: (){
-                signOut(context);
+                signOut(ctx);
               },
             ),
           )
